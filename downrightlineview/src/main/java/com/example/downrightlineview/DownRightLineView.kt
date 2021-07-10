@@ -181,4 +181,27 @@ class DownRightLineView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : DownRightLineView) {
+
+        private val animator : Animator = Animator(view)
+        private val drl : DownRightLine = DownRightLine(0)
+        private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+        fun render(canvas : Canvas) {
+            canvas.drawColor(backColor)
+            drl.draw(canvas, paint)
+            animator.animate {
+                drl.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            drl.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
