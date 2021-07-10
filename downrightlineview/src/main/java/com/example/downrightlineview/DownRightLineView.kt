@@ -204,4 +204,13 @@ class DownRightLineView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : DownRightLineView {
+            val view : DownRightLineView = DownRightLineView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
