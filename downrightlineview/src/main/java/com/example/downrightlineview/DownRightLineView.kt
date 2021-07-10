@@ -117,4 +117,45 @@ class DownRightLineView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    data class DRLNode(var i : Int, val state : State = State()) {
+
+        private var next : DRLNode? = null
+        private var prev : DRLNode? = null
+
+        init {
+            addNeighbor()
+        }
+
+        fun addNeighbor() {
+            if (i < colors.size - 1) {
+                next = DRLNode(i + 1)
+                next?.prev = this
+            }
+        }
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            canvas.drawDRLNode(i, state.scale, paint)
+        }
+
+        fun update(cb : (Float) -> Unit) {
+            state.update(cb)
+        }
+
+        fun startUpdating(cb : () -> Unit) {
+            state.startUpdating(cb)
+        }
+
+        fun getNext(dir : Int, cb : () -> Unit) : DRLNode {
+            var curr : DRLNode? = prev
+            if (dir == 1) {
+                curr = next
+            }
+            if (curr != null){
+                return curr
+            }
+            cb()
+            return this
+        }
+    }
 }
